@@ -91,7 +91,7 @@ module.exports = (_, { mode }) => {
     ],
 
     output: {
-      path: getAbsolutePath("dist"),
+      path: getAbsolutePath("build"),
       filename: "[name].[chunkhash].js",
       publicPath: "/",
       clean: true,
@@ -110,6 +110,16 @@ module.exports = (_, { mode }) => {
       },
     },
   };
+
+  // 배포 환경
+  if (mode === PRODUCTION && config.plugins) {
+    config.plugins.push(
+      new webpack.DefinePlugin({
+        "process.env.CAT_API_KEY": JSON.stringify(CAT_API_KEY),
+        "process.env.REDUX_DEV_TOOL": JSON.stringify(false),
+      }),
+    );
+  }
 
   // 개발환경
   if (mode !== PRODUCTION && config.plugins) {

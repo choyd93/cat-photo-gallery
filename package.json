@@ -1,8 +1,15 @@
 {
   "name": "cat-photo-gallery",
   "version": "1.0.0",
+  "description": "",
   "main": "index.js",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/choyd93/cat-photo-gallery.git"
+  },
+  "keywords": [],
+  "homepage": "https://main.d3ccsn9ffqdhel.amplifyapp.com",
   "dependencies": {
     "@babel/preset-typescript": "^7.16.7",
     "@babel/runtime": "^7.17.8",
@@ -60,6 +67,7 @@
   },
   "scripts": {
     "build": "webpack --mode=production",
+    "serve": "serve ./build",
     "dev": "webpack serve --mode=development"
   }
 }
