@@ -26,6 +26,14 @@ const App = () => {
     }, 500);
   };
 
+  const onSubmitSearch = (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    if (searchKeyword.length > 1) {
+      dispatch(catSearchAsync(searchKeyword));
+      setSearchKeyword("");
+    }
+  };
+
   useEffect(() => {
     if (photoList.length === 0) dispatch(catListAsync());
   }, []);
@@ -34,7 +42,7 @@ const App = () => {
     <Container>
       <h1>😸 고양이 사진 갤러리 😻</h1>
       <section>
-        <form>
+        <form onSubmit={onSubmitSearch}>
           <input type="text" onChange={handleTitleOnChange} placeholder="검색어를 입력해주세요." />
           <button type="submit">Search</button>
         </form>
