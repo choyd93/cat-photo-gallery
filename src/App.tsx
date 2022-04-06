@@ -12,29 +12,6 @@ const App = () => {
   const { photoList, autoCompleteContent } = useTypedSelector(catReduceSelector);
   const [searchKeyword, setSearchKeyword] = useState<string>("");
 
-  const autocompleteKeyword = autoCompleteContent.map((catsInfo, idx) => {
-    const handleAutocompleteOnClick = () => {
-      dispatch(catSearchAsync(catsInfo.name));
-      setSearchKeyword("");
-    };
-    return (
-      <article key={idx} onClick={handleAutocompleteOnClick}>
-        {catsInfo.name}
-      </article>
-    );
-  });
-
-  const catPhotoList = photoList.map((item, idx) => {
-    const { name, image } = item;
-    const { url } = image ?? defaultCat;
-    return (
-      <div className="gallery__item" key={idx}>
-        <span className="gallery__title">{name}</span>
-        <img className="gallery__img" src={image ? url : defaultCat} alt={name} />
-      </div>
-    );
-  });
-
   const handleTitleOnChange = ({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
     if (debounce.current) clearTimeout(debounce.current);
     debounce.current = setTimeout(() => {
@@ -61,9 +38,33 @@ const App = () => {
           <input type="text" onChange={handleTitleOnChange} placeholder="검색어를 입력해주세요." />
           <button type="submit">Search</button>
         </form>
-        <div className="search__result">{searchKeyword && autocompleteKeyword}</div>
+        <div className="search__result">
+          {searchKeyword &&
+            autoCompleteContent.map((catsInfo, idx) => {
+              const handleAutocompleteOnClick = () => {
+                dispatch(catSearchAsync(catsInfo.name));
+                setSearchKeyword("");
+              };
+              return (
+                <article key={idx} onClick={handleAutocompleteOnClick}>
+                  {catsInfo.name}
+                </article>
+              );
+            })}
+        </div>
       </section>
-      <section className="gallery">{catPhotoList}</section>
+      <section className="gallery">
+        {photoList.map((item, idx) => {
+          const { name, image } = item;
+          const { url } = image ?? defaultCat;
+          return (
+            <div className="gallery__item" key={idx}>
+              <span className="gallery__title">{name}</span>
+              <img className="gallery__img" src={image ? url : defaultCat} alt={name} />
+            </div>
+          );
+        })}
+      </section>
     </Container>
   );
 };
