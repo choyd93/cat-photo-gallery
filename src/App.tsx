@@ -4,7 +4,7 @@ import { catAutoCompleteAsync, catListAsync, catReduceSelector, catSearchAsync }
 import { useTypedSelector } from "src/modules/store";
 import defaultCat from "assets/images/default_cat.jpg";
 import useDebounce from "src/hooks/useDebounce";
-import { Container } from "./types";
+import { Container } from "./styles";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -26,7 +26,7 @@ const App = () => {
     }, 500);
   };
 
-  const onSubmitSearch = (e: { preventDefault: () => void }) => {
+  const onSubmitSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (searchKeyword.length > 1) {
       dispatch(catSearchAsync(searchKeyword));
@@ -48,22 +48,21 @@ const App = () => {
         </form>
         <div className="search__result">
           {searchKeyword &&
-            autoCompleteContent.map((catsInfo, idx) => {
+            autoCompleteContent.map(({ name }, idx) => {
               const handleAutocompleteOnClick = () => {
-                dispatch(catSearchAsync(catsInfo.name));
+                dispatch(catSearchAsync(name));
                 setSearchKeyword("");
               };
               return (
                 <article key={idx} onClick={handleAutocompleteOnClick}>
-                  {catsInfo.name}
+                  {name}
                 </article>
               );
             })}
         </div>
       </section>
       <section className="gallery">
-        {photoList.map((item, idx) => {
-          const { name, image } = item;
+        {photoList.map(({ name, image }, idx) => {
           const { url } = image ?? defaultCat;
           return (
             <div className="gallery__item" key={idx}>

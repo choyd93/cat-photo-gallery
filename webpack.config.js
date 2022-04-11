@@ -15,7 +15,6 @@ module.exports = (_, { mode }) => {
   const config = {
     name: "cat-photo-gallery",
     mode,
-    // https://webpack.js.org/configuration/devtool/
     devtool: mode === PRODUCTION ? "source-map" : "eval-source-map",
 
     resolve: {
@@ -73,10 +72,6 @@ module.exports = (_, { mode }) => {
             },
           ],
         },
-        {
-          test: /\.css$/i,
-          use: ["style-loader", "css-loader"],
-        },
       ],
     },
 
@@ -105,13 +100,9 @@ module.exports = (_, { mode }) => {
       devMiddleware: {
         publicPath: "/",
       },
-      proxy: {
-        "/api": "http://localhost:5000",
-      },
     },
   };
 
-  // 배포 환경
   if (mode === PRODUCTION && config.plugins) {
     config.plugins.push(
       new webpack.DefinePlugin({
@@ -121,7 +112,6 @@ module.exports = (_, { mode }) => {
     );
   }
 
-  // 개발환경
   if (mode !== PRODUCTION && config.plugins) {
     config.plugins.push(new ReactRefreshWebpackPlugin());
     config.plugins.push(
